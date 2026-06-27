@@ -1,0 +1,53 @@
+# General Settings
+daemonize
+ignore-empty-password
+show-failed-attempts
+
+# Mechanics & Effects (Requires swaylock-effects)
+screenshots
+clock
+indicator
+indicator-radius=100
+indicator-thickness=7
+effect-blur=7x5
+effect-vignette=0.5:0.5
+
+# Date & Time Formatting
+time-format=%I:%M %p
+date-format=%A, %B %d
+font="Sans"
+
+# Colors (Catppuccin Mocha Theme)
+# Format: RRGGBBAA
+
+# Ring/Indicator Colors
+key-hl-color=a6e3a1ff
+bs-hl-color=f38ba8ff
+
+line-color=00000000
+line-clear-color=00000000
+line-caps-lock-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+
+ring-color=11111bff
+ring-clear-color=fab387ff
+ring-caps-lock-color=f9e2afff
+ring-ver-color=89b4faff
+ring-wrong-color=f38ba8ff
+
+inside-color=1e1e2edd
+inside-clear-color=1e1e2edd
+inside-caps-lock-color=1e1e2edd
+inside-ver-color=1e1e2edd
+inside-wrong-color=1e1e2edd
+
+# Text Colors
+text-color=cdd6f4ff
+text-clear-color=fab387ff
+text-caps-lock-color=f9e2afff
+text-ver-color=89b4faff
+text-wrong-color=f38ba8ff
+
+# Layout / Text Elements Colors
+text-caps-lock-color=f9e2afff

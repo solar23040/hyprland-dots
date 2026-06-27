@@ -1,0 +1,53 @@
+@import "colors/gruvbox-material.css";
+
+* {
+    all: unset;
+        font-family: "JetBrainsMono Nerd Font", monospace;
+            font-size: 11px;
+            }
+
+            window#waybar {
+                background-color: @bg0;
+                    color: @fg;
+                        opacity: 0.95;
+                            min-height: 24px;
+                                padding: 2px 0;
+                                }
+
+                                #workspaces {
+                                    margin: 0 10px;
+                                        border-radius: 99px;
+                                        }
+
+                                        #workspaces button {
+                                            color: @gray;
+                                                padding: 0 5px;
+                                                    margin: 0 2px;
+                                                    }
+
+                                                    #workspaces button.active {
+                                                        background-color: @blue;
+                                                            color: @bg0;
+                                                                border-radius: 99px;
+                                                                }
+
+                                                                #clock,
+                                                                #clock#right {
+                                                                    margin: 0 15px;
+                                                                        font-weight: 700;
+                                                                        }
+
+                                                                        #pulseaudio,
+                                                                        #cava,
+                                                                        #battery {
+                                                                            margin: 0 8px;
+                                                                                padding: 0 5px;
+                                                                                }
+
+                                                                                .modules-left {
+                                                                                    margin-left: 7px;
+                                                                                    }
+
+                                                                                    .modules-right {
+                                                                                        margin-right: 7px;
+                                                                                        }
