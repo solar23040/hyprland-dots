@@ -2,6 +2,8 @@
 
 My personal Hyprland + Wayland rice config.
 
+feel free to make a pr or report an issue
+
 ## Quick Install
 git clone https://github.com/solar23040/hyprland-dots.git
 
