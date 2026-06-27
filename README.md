@@ -4,7 +4,11 @@ My personal Hyprland + Wayland rice config.
 
 ## Quick Install
 git clone https://github.com/solar23040/hyprland-dots.git
+
+
 cd hyprland-dots
+
+
 ./install.sh
 
 ## What's included
