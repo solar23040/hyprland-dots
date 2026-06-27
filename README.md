@@ -24,10 +24,42 @@ cd hyprland-dots
 
 ## Restore backup
 
-If something breaks:
+## If something breaks:
 cp -r ~/.config-backup-* ~/.config
 
 
 ## Dependencies
+## arch
 
-sudo pacman -S hyprland waybar alacritty rofi swaylock fastfetch
+
+sudo pacman -S hyprland waybar alacritty rofi swaylock fastfetch kitty
+
+
+
+
+
+
+Debian/ubuntu
+
+
+
+sudo apt install hyprland waybar alacritty rofi swaylock fastfetch kitty
+
+
+
+
+
+fedora
+
+
+
+sudo dnf install hyprand waybar alacritty rofi swaylock fastfetch kitty
+
+
+
+
+
+
+
+## note:
+only tested on arch download kitty because its default on hyprland then after installing dots it will change to alacritty
