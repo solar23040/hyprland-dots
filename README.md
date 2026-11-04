@@ -27,11 +27,13 @@ A personal **Hyprland + Wayland** rice — clean, fast, and daily-driven. Lua-ba
 
 ## 📸 Screenshots
 
-![Overview](screenshots/overview.png)
+![Screenshot 1](screenshots/screenshot-1.png)
 
-![Overview 2](screenshots/overview2.png)
+![Screenshot 2](screenshots/screenshot-2.png)
 
-![Rofi](screenshots/rofi.png)
+![Screenshot 3](screenshots/screenshot-3.png)
+
+![Screenshot 4](screenshots/screenshot-4.png)
 
 ## 📦 What's included
 
