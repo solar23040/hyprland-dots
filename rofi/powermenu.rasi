@@ -1,0 +1,118 @@
+/**
+ *  Rofi Power Menu
+ *  ───────────────
+ *  Catppuccin card matching the circular launcher.
+ **/
+
+@import "colors/catppuccin.rasi"
+
+* {
+    font:                    "JetBrainsMono Nerd Font 12";
+    background-color:        transparent;
+    text-color:              @foreground;
+    foreground-dim:          #6E6C7EFF;
+}
+
+configuration {
+    show-icons:              false;
+}
+
+window {
+    transparency:            "real";
+    location:                center;
+    anchor:                  center;
+    fullscreen:              false;
+    width:                   340px;
+    cursor:                  "default";
+
+    background-color:        @background;
+    border:                  2px;
+    border-color:            @selected;
+    border-radius:            24px;
+}
+
+mainbox {
+    enabled:                 true;
+    orientation:             vertical;
+    spacing:                 16px;
+    padding:                 26px 22px;
+    children:                [ "inputbar", "listview", "message" ];
+}
+
+inputbar {
+    enabled:                 true;
+    padding:                 0px;
+    spacing:                 0px;
+    background-color:        transparent;
+    children:                [ "prompt" ];
+}
+
+prompt {
+    enabled:                 true;
+    padding:                 2px 0px 0px 0px;
+    background-color:        transparent;
+    text-color:              @selected;
+    horizontal-align:        0.5;
+}
+
+entry {
+    enabled:                 false;
+}
+
+listview {
+    enabled:                 true;
+    columns:                 1;
+    lines:                   3;
+    fixed-height:            true;
+    fixed-columns:           true;
+    cycle:                   true;
+    dynamic:                 true;
+    scrollbar:               false;
+    spacing:                 10px;
+    background-color:        transparent;
+    cursor:                  "default";
+}
+
+element {
+    enabled:                 true;
+    spacing:                 12px;
+    padding:                 13px 18px;
+    border-radius:            14px;
+    background-color:        @background-alt;
+    text-color:              @foreground;
+    cursor:                  pointer;
+}
+
+element normal.normal {
+    background-color:        @background-alt;
+    text-color:              @foreground;
+}
+
+element alternate.normal {
+    background-color:        @background-alt;
+    text-color:              @foreground;
+}
+
+element selected.normal {
+    background-color:        @selected;
+    text-color:              @background;
+}
+
+element-text {
+    background-color:        transparent;
+    text-color:              inherit;
+    vertical-align:          0.5;
+    horizontal-align:        0.0;
+}
+
+message {
+    enabled:                 true;
+    padding:                 0px;
+    background-color:        transparent;
+}
+
+textbox {
+    background-color:        transparent;
+    text-color:              @foreground-dim;
+    horizontal-align:        0.5;
+}

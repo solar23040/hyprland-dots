@@ -1,53 +1,348 @@
-@import "colors/gruvbox-material.css";
+/* ─────────────────────────────────────────────
+   waybar — Catppuccin Mocha
+   base: vertical bar, right edge, floating rounded
+   (bar "waybar-4k" scales this 2x; see below)
+   ───────────────────────────────────────────── */
+@import "colors/catppuccin-mocha.css";
 
 * {
-    all: unset;
-        font-family: "JetBrainsMono Nerd Font", monospace;
-            font-size: 11px;
-            }
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 12px;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+}
 
-            window#waybar {
-                background-color: @bg0;
-                    color: @fg;
-                        opacity: 0.95;
-                            min-height: 24px;
-                                padding: 2px 0;
-                                }
+window#waybar {
+    background: alpha(@base, 0.60);
+    color: @text;
+    border: 1px solid alpha(@surface1, 0.8);
+    border-radius: 18px;
+}
 
-                                #workspaces {
-                                    margin: 0 10px;
-                                        border-radius: 99px;
-                                        }
+/* ── smooth hover / state changes ── */
+#custom-launcher,
+#workspaces button,
+#bluetooth,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#battery,
+#custom-screenshot,
+#custom-workspace,
+#custom-power-profile,
+#custom-power {
+    transition: all 0.2s ease;
+}
 
-                                        #workspaces button {
-                                            color: @gray;
-                                                padding: 0 5px;
-                                                    margin: 0 2px;
-                                                    }
+/* ── top: launcher ── */
+#custom-launcher {
+    font-size: 19px;
+    color: @lavender;
+    padding: 12px 0 8px 0;
+}
+#custom-launcher:hover {
+    color: @pink;
+}
 
-                                                    #workspaces button.active {
-                                                        background-color: @blue;
-                                                            color: @bg0;
-                                                                border-radius: 99px;
-                                                                }
+/* ── workspaces ── */
+#workspaces {
+    margin: 4px 0 8px 0;
+}
+#workspaces button {
+    background: transparent;
+    color: @surface2;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    margin: 2px 0;
+    border-radius: 99px;
+}
+#workspaces button:hover {
+    color: @text;
+    background: alpha(@surface0, 0.6);
+}
+#workspaces button.active {
+    background: @lavender;
+    color: @base;
+    font-weight: 700;
+}
+#workspaces button.urgent {
+    background: @red;
+    color: @base;
+}
 
-                                                                #clock,
-                                                                #clock#right {
-                                                                    margin: 0 15px;
-                                                                        font-weight: 700;
-                                                                        }
+/* ── clock ── */
+#clock {
+    font-size: 13px;
+    font-weight: 700;
+    color: @text;
+    padding: 4px 0 0 0;
+}
+#clock.date {
+    font-size: 10px;
+    font-weight: 500;
+    color: @subtext0;
+    padding: 0 0 6px 0;
+}
 
-                                                                        #pulseaudio,
-                                                                        #cava,
-                                                                        #battery {
-                                                                            margin: 0 8px;
-                                                                                padding: 0 5px;
-                                                                                }
+/* ── current workspace (center) ── */
+#custom-workspace {
+    font-size: 19px;
+    font-weight: 700;
+    color: @lavender;
+    background: alpha(@surface0, 0.45);
+    border-radius: 10px;
+    padding: 5px 8px;
+    margin: 2px;
+}
+#custom-workspace.empty {
+    color: @overlay0;
+}
 
-                                                                                .modules-left {
-                                                                                    margin-left: 7px;
-                                                                                    }
+/* ── screenshot ── */
+#custom-screenshot {
+    font-size: 17px;
+    color: @green;
+    padding: 6px 0;
+    margin: 2px 0;
+    border-radius: 8px;
+}
+#custom-screenshot:hover {
+    background: alpha(@surface0, 0.5);
+    color: @teal;
+}
 
-                                                                                    .modules-right {
-                                                                                        margin-right: 7px;
-                                                                                        }
+/* ── system modules (bottom section) ── */
+#bluetooth,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#temperature,
+#custom-power-profile,
+#battery {
+    font-size: 14px;
+    padding: 5px 0;
+    margin: 1px 0;
+}
+
+/* subtle hover pills */
+#bluetooth,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#custom-power-profile,
+#battery {
+    padding: 5px 6px;
+    border-radius: 8px;
+}
+#bluetooth:hover,
+#network:hover,
+#pulseaudio:hover,
+#cpu:hover,
+#memory:hover,
+#custom-power-profile:hover,
+#battery:hover {
+    background: alpha(@surface0, 0.5);
+}
+
+#bluetooth          { color: @blue; }
+#bluetooth.disabled { color: @overlay0; }
+#bluetooth.off      { color: @overlay0; }
+
+#network               { color: @sapphire; }
+#network.disconnected  { color: @overlay0; }
+
+#pulseaudio         { color: @sky; }
+#pulseaudio.muted   { color: @overlay0; }
+
+#cpu         { color: @blue; }
+#memory      { color: @mauve; }
+#temperature { color: @peach; }
+#temperature.critical { color: @red; }
+
+#battery { color: @green; }
+#battery.charging,
+#battery.plugged { color: @green; }
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+#battery.critical:not(.charging) {
+    color: @red;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-timing-function: steps(1);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* ── power profile ── */
+#custom-power-profile             { color: @blue; }
+#custom-power-profile.power-saver { color: @green; }
+#custom-power-profile.performance { color: @peach; }
+
+/* ── tray ── */
+#tray {
+    margin: 8px 0;
+    padding: 2px 0;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+/* ── power button ── */
+#custom-power {
+    font-size: 18px;
+    color: @red;
+    padding: 8px 0 12px 0;
+    margin: 2px 0;
+}
+#custom-power:hover {
+    color: @maroon;
+}
+
+/* ─────────────────────────────────────────────
+   4K bar (right) — the base vertical style is
+   drawn 2x so it matches the laptop bar's
+   physical size (DP-2 is 3840x2160 @ scale 1)
+   ───────────────────────────────────────────── */
+window#waybar.waybar-4k {
+    border-width: 2px;
+    border-radius: 36px;
+}
+.waybar-4k * {
+    font-size: 24px;
+}
+.waybar-4k #custom-launcher {
+    font-size: 38px;
+    padding: 24px 0 16px 0;
+}
+.waybar-4k #workspaces {
+    margin: 8px 0 16px 0;
+}
+.waybar-4k #workspaces button {
+    font-size: 20px;
+    padding: 8px 20px;
+    margin: 4px 0;
+    border-radius: 198px;
+}
+.waybar-4k #clock {
+    font-size: 26px;
+    padding: 8px 0 0 0;
+}
+.waybar-4k #clock.date {
+    font-size: 20px;
+    padding: 0 0 12px 0;
+}
+.waybar-4k #custom-workspace {
+    font-size: 38px;
+    border-radius: 20px;
+    padding: 10px 16px;
+    margin: 4px;
+}
+.waybar-4k #custom-screenshot {
+    font-size: 34px;
+    padding: 12px 0;
+    margin: 4px 0;
+    border-radius: 16px;
+}
+.waybar-4k #bluetooth,
+.waybar-4k #network,
+.waybar-4k #pulseaudio,
+.waybar-4k #cpu,
+.waybar-4k #memory,
+.waybar-4k #temperature,
+.waybar-4k #custom-power-profile,
+.waybar-4k #battery {
+    font-size: 28px;
+    padding: 10px 12px;
+    margin: 2px 0;
+    border-radius: 16px;
+}
+.waybar-4k #tray {
+    margin: 16px 0;
+    padding: 4px 0;
+}
+.waybar-4k #custom-power {
+    font-size: 36px;
+    padding: 16px 0 24px 0;
+    margin: 4px 0;
+}
+
+/* ─────────────────────────────────────────────
+   laptop (top) bar — overrides scoped by the
+   "waybar-laptop" CSS class (bar "name")
+   ───────────────────────────────────────────── */
+.waybar-laptop #custom-launcher {
+    padding: 0 10px 0 6px;
+}
+.waybar-laptop #workspaces {
+    margin: 0;
+}
+.waybar-laptop #workspaces button {
+    margin: 0 2px;
+    padding: 3px 9px;
+}
+.waybar-laptop #custom-screenshot {
+    padding: 0 8px;
+    margin: 0;
+}
+.waybar-laptop #clock {
+    font-size: 14px;
+    padding: 0 6px;
+}
+.waybar-laptop #clock.date {
+    font-size: 11px;
+    padding: 0 6px 0 0;
+}
+.waybar-laptop #tray {
+    margin: 0 4px;
+    padding: 0;
+}
+.waybar-laptop #bluetooth,
+.waybar-laptop #network,
+.waybar-laptop #pulseaudio,
+.waybar-laptop #cpu,
+.waybar-laptop #memory,
+.waybar-laptop #temperature,
+.waybar-laptop #custom-power-profile,
+.waybar-laptop #battery {
+    padding: 0 8px;
+    margin: 0;
+}
+.waybar-laptop #custom-power {
+    padding: 0 8px;
+    margin: 0;
+}
+
+/* uncomment when cava is installed (add "cava" to modules-center)
+#cava {
+    color: @teal;
+    padding: 8px 0;
+}
+*/
+
+@keyframes blink {
+    50% {
+        color: @maroon;
+    }
+}
+
+/* ── tooltips ── */
+tooltip {
+    background: @base;
+    border: 1px solid @surface1;
+    border-radius: 10px;
+}
+tooltip label {
+    color: @text;
+    padding: 4px;
+}

@@ -1,181 +1,247 @@
 /**
+ *  Circular Rofi
+ *  ─────────────
+ *  A true-circle launcher theme.
  *
- * Author : Aditya Shakya (adi1090x)
- * Github : @adi1090x
- * 
- * Configuration For Rofi Version: 1.7.3
+ *  • Window : square (520 x 520) + 50% radius = perfect circle
+ *  • Colors : Catppuccin (colors/catppuccin.rasi)
+ *  • Font   : JetBrainsMono Nerd Font
+ *  • Modes  : Apps · Run · Files · Windows
+ *
+ *  Previous config backed up to: config.rasi.bak
  **/
 
+@import "colors/catppuccin.rasi"
+
 configuration {
-	/*---------- General setting ----------*/
-	modi: "drun,run,filebrowser,window";
-	case-sensitive: false;
-	cycle: true;
-	filter: "";
-	scroll-method: 0;
-	normalize-match: true;
-	show-icons: true;
-	icon-theme: "Papirus";
-/*	cache-dir: ;*/
-	steal-focus: false;
-/*	dpi: -1;*/
+	modes:                "drun,run,filebrowser,window";
+	show-icons:           true;
+	icon-theme:           "Papirus";
+	case-sensitive:       false;
+	cycle:                true;
+	normalize-match:      true;
+	matching:             "normal";
+	tokenize:             true;
+	click-to-exit:        true;
+	terminal:             "rofi-sensible-terminal";
 
-	/*---------- Matching setting ----------*/
-	matching: "normal";
-	tokenize: true;
+	drun-display-format:  "{name}";
+	window-format:        "{w} · {c} · {t}";
+	display-drun:         "Apps";
+	display-run:          "Run";
+	display-filebrowser:  "Files";
+	display-window:       "Windows";
 
-	/*---------- SSH settings ----------*/
-	ssh-client: "ssh";
-	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";
-	parse-hosts: true;
-	parse-known-hosts: true;
-
-	/*---------- Drun settings ----------*/
-	drun-categories: "";
-	drun-match-fields: "name,generic,exec,categories,keywords";
-	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
-	drun-show-actions: false;
-	drun-url-launcher: "xdg-open";
-	drun-use-desktop-cache: false;
-	drun-reload-desktop-cache: false;
-	drun {
-		/** Parse user desktop files. */
-		parse-user:   true;
-		/** Parse system desktop files. */
-		parse-system: true;
-    }
-
-	/*---------- Run settings ----------*/
-	run-command: "{cmd}";
-	run-list-command: "";
-	run-shell-command: "{terminal} -e {cmd}";
-
-	/*---------- Fallback Icon ----------*/
 	run,drun {
-		fallback-icon: "application-x-addon";
+		fallback-icon:    "application-x-addon";
 	}
+	drun {
+		parse-user:       true;
+		parse-system:     true;
+	}
+	filebrowser {
+		directories-first: true;
+		sorting-method:   "name";
+	}
+	timeout {
+		action:           "kb-cancel";
+		delay:            0;
+	}
+}
 
-	/*---------- Window switcher settings ----------*/
-	window-match-fields: "title,class,role,name,desktop";
-	window-command: "wmctrl -i -R {window}";
-	window-format: "{w} - {c} - {t:0}";
-	window-thumbnail: false;
+/*****----- Global properties -----*****/
+* {
+	font:                 "JetBrainsMono Nerd Font 11";
+	foreground-dim:       #6E6C7EFF;
+}
 
-	/*---------- Combi settings ----------*/
-/*	combi-modi: "window,run";*/
-/*	combi-hide-mode-prefix: false;*/
-/*	combi-display-format: "{mode} {text}";*/
+/*****----- Circular window -----*****/
+window {
+	transparency:         "real";
+	location:             center;
+	anchor:               center;
+	fullscreen:           false;
+	width:                520px;
+	height:               520px;
+	x-offset:             0px;
+	y-offset:             0px;
+	cursor:               "default";
 
-	/*---------- History and Sorting ----------*/
-	disable-history: false;
-	sorting-method: "normal";
-	max-history-size: 25;
+	background-color:     @background;
+	border:               2px;
+	border-color:         @selected;
+	border-radius:        50%;
+}
 
-	/*---------- Display setting ----------*/
-	display-window: "Windows";
-	display-windowcd: "Window CD";
-	display-run: "Run";
-	display-ssh: "SSH";
-	display-drun: "Apps";
-	display-combi: "Combi";
-	display-keys: "Keys";
-	display-filebrowser: "Files";
+/*****----- Main box -----*****/
+mainbox {
+	enabled:              true;
+	orientation:          vertical;
+	spacing:              14px;
+	padding:              68px 62px;
+	background-color:     transparent;
+	children:             [ "inputbar", "listbox", "mode-switcher" ];
+}
 
-	/*---------- Misc setting ----------*/
-	terminal: "rofi-sensible-terminal";
-	font: "Mono 12";
-	sort: false;
-	threads: 0;
-	click-to-exit: true;
-/*	ignored-prefixes: "";*/
-/*	pid: "/run/user/1000/rofi.pid";*/
+listbox {
+	spacing:              0px;
+	padding:              0px;
+	background-color:     transparent;
+	orientation:          vertical;
+	children:             [ "message", "listview" ];
+}
 
-	/*---------- File browser settings ----------*/
-    filebrowser {
-/*	  directory: "/home";*/
-      directories-first: true;
-      sorting-method:    "name";
-    }
+/*****----- Inputbar -----*****/
+inputbar {
+	enabled:              true;
+	spacing:              10px;
+	padding:              10px 18px;
+	border-radius:        100px;
+	background-color:     @background-alt;
+	text-color:           @foreground;
+	children:             [ "textbox-prompt-colon", "entry" ];
+}
 
-	/*---------- Other settings ----------*/
-    timeout {
-      action: "kb-cancel";
-      delay:  0;
-    }
+textbox-prompt-colon {
+	enabled:              true;
+	expand:               false;
+	str:                  "";
+	background-color:     inherit;
+	text-color:           @selected;
+}
 
-	/*---------- Keybindings ----------*/
-/*
-	kb-primary-paste: "Control+V,Shift+Insert";
-	kb-secondary-paste: "Control+v,Insert";
-	kb-clear-line: "Control+w";
-	kb-move-front: "Control+a";
-	kb-move-end: "Control+e";
-	kb-move-word-back: "Alt+b,Control+Left";
-	kb-move-word-forward: "Alt+f,Control+Right";
-	kb-move-char-back: "Left,Control+b";
-	kb-move-char-forward: "Right,Control+f";
-	kb-remove-word-back: "Control+Alt+h,Control+BackSpace";
-	kb-remove-word-forward: "Control+Alt+d";
-	kb-remove-char-forward: "Delete,Control+d";
-	kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+h";
-	kb-remove-to-eol: "Control+k";
-	kb-remove-to-sol: "Control+u";
-	kb-accept-entry: "Control+j,Control+m,Return,KP_Enter";
-	kb-accept-custom: "Control+Return";
-	kb-accept-custom-alt: "Control+Shift+Return";
-	kb-accept-alt: "Shift+Return";
-	kb-delete-entry: "Shift+Delete";
-	kb-mode-next: "Shift+Right,Control+Tab";
-	kb-mode-previous: "Shift+Left,Control+ISO_Left_Tab";
-	kb-mode-complete: "Control+l";
-	kb-row-left: "Control+Page_Up";
-	kb-row-right: "Control+Page_Down";
-	kb-row-down: "Down,Control+n";
-	kb-page-prev: "Page_Up";
-	kb-page-next: "Page_Down";
-	kb-row-first: "Home,KP_Home";
-	kb-row-last: "End,KP_End";
-	kb-row-select: "Control+space";
-	kb-screenshot: "Alt+S";
-	kb-ellipsize: "Alt+period";
-	kb-toggle-case-sensitivity: "grave,dead_grave";
-	kb-toggle-sort: "Alt+grave";
-	kb-cancel: "Escape,Control+g,Control+bracketleft";
-	kb-custom-1: "Alt+1";
-	kb-custom-2: "Alt+2";
-	kb-custom-3: "Alt+3";
-	kb-custom-4: "Alt+4";
-	kb-custom-5: "Alt+5";
-	kb-custom-6: "Alt+6";
-	kb-custom-7: "Alt+7";
-	kb-custom-8: "Alt+8";
-	kb-custom-9: "Alt+9";
-	kb-custom-10: "Alt+0";
-	kb-custom-11: "Alt+exclam";
-	kb-custom-12: "Alt+at";
-	kb-custom-13: "Alt+numbersign";
-	kb-custom-14: "Alt+dollar";
-	kb-custom-15: "Alt+percent";
-	kb-custom-16: "Alt+dead_circumflex";
-	kb-custom-17: "Alt+ampersand";
-	kb-custom-18: "Alt+asterisk";
-	kb-custom-19: "Alt+parenleft";
-	kb-select-1: "Super+1";
-	kb-select-2: "Super+2";
-	kb-select-3: "Super+3";
-	kb-select-4: "Super+4";
-	kb-select-5: "Super+5";
-	kb-select-6: "Super+6";
-	kb-select-7: "Super+7";
-	kb-select-8: "Super+8";
-	kb-select-9: "Super+9";
-	kb-select-10: "Super+0";
-	ml-row-left: "ScrollLeft";
-	ml-row-right: "ScrollRight";
-	ml-row-up: "ScrollUp";
-	ml-row-down: "ScrollDown";
-	me-select-entry: "MousePrimary";
-	me-accept-entry: "MouseDPrimary";
-	me-accept-custom: "Control+MouseDPrimary";
-*/
+entry {
+	enabled:              true;
+	background-color:     inherit;
+	text-color:           @foreground;
+	placeholder:          "Search…";
+	placeholder-color:    @foreground-dim;
+	cursor:               text;
+}
+
+/*****----- Listview -----*****/
+listview {
+	enabled:              true;
+	columns:              1;
+	lines:                5;
+	cycle:                true;
+	dynamic:              true;
+	scrollbar:            false;
+	layout:               vertical;
+	reverse:              false;
+	fixed-height:         true;
+	fixed-columns:        true;
+	spacing:              8px;
+	background-color:     transparent;
+	text-color:           @foreground;
+	cursor:               "default";
+}
+
+/*****----- Elements -----*****/
+element {
+	enabled:              true;
+	spacing:              12px;
+	padding:              7px 14px;
+	border-radius:        100px;
+	background-color:     transparent;
+	text-color:           @foreground;
+	cursor:               pointer;
+}
+
+element normal.normal {
+	background-color:     transparent;
+	text-color:           @foreground;
+}
+element normal.urgent {
+	background-color:     @urgent;
+	text-color:           @background;
+}
+element normal.active {
+	background-color:     @background-alt;
+	text-color:           @foreground;
+}
+element selected.normal {
+	background-color:     @selected;
+	text-color:           @background;
+}
+element selected.urgent {
+	background-color:     @urgent;
+	text-color:           @background;
+}
+element selected.active {
+	background-color:     @selected;
+	text-color:           @background;
+}
+
+/* rofi 2.0 draws uneven rows in the 'alternate' state. Without these
+   overrides, unselected rows fall back to the light built-in defaults
+   (cream bg + light text) and become unreadable. */
+element alternate.normal {
+	background-color:     transparent;
+	text-color:           @foreground;
+}
+element alternate.urgent {
+	background-color:     @urgent;
+	text-color:           @background;
+}
+element alternate.active {
+	background-color:     @background-alt;
+	text-color:           @foreground;
+}
+
+element-icon {
+	background-color:     transparent;
+	text-color:           inherit;
+	size:                 26px;
+	cursor:               inherit;
+}
+
+element-text {
+	background-color:     transparent;
+	text-color:           inherit;
+	cursor:               inherit;
+	vertical-align:       0.5;
+	horizontal-align:     0.0;
+}
+
+/*****----- Mode switcher -----*****/
+mode-switcher {
+	enabled:              true;
+	spacing:              8px;
+	background-color:     transparent;
+	text-color:           @foreground;
+}
+
+button {
+	padding:              7px 12px;
+	border-radius:        100px;
+	background-color:     @background-alt;
+	text-color:           @foreground;
+	cursor:               pointer;
+}
+
+button selected {
+	background-color:     @selected;
+	text-color:           @background;
+}
+
+/*****----- Message -----*****/
+message {
+	background-color:     transparent;
+}
+
+textbox {
+	padding:              10px 16px;
+	border-radius:        100px;
+	background-color:     @background-alt;
+	text-color:           @foreground;
+	vertical-align:       0.5;
+	horizontal-align:     0.0;
+}
+
+error-message {
+	padding:              10px 16px;
+	border-radius:        20px;
+	background-color:     @background;
+	text-color:           @urgent;
 }

@@ -1,83 +1,340 @@
+// ─────────────────────────────────────────────────────────────
+//  waybar — per-output bars (single process, multi-bar array)
+//  DP-2  : 4K, vertical bar on the right edge (2x sizes,
+//          see the .waybar-4k block in style.css)
+//  eDP-1 : laptop, horizontal bar on the top edge
+//  theme : Catppuccin Mocha (see style.css / colors/)
+//  note  : for the audio visualizer, install "cava" and add
+//          "cava" to "modules-center" below.
+// ─────────────────────────────────────────────────────────────
+[
+    // ── 4K monitor (DP-1 / DP-2): vertical, right edge ──
+    {
+        "layer": "top",
+        "name": "waybar-4k",
+        "output": ["DP-1", "DP-2"],
+        "position": "right",
+        "width": 96,
+        "spacing": 12,
+        "margin-top": 16,
+        "margin-right": 16,
+        "margin-bottom": 16,
 
-{
-    "layer": "top",
-    "width": 1000,
-    "modules-left": [
-        "pulseaudio",
-        "cava"
-    ],
-    "modules-center": [
-        "clock",
-        "hyprland/workspaces",
-        "clock#right"
-    ],
-    "modules-right": [
-        "battery"
-    ],
-    "sway/window": {
-        "max-length": 10
-    },
-    "battery": {
-        "bat": "BAT0",
-        "interval": 60,
-        "format": "{capacity}% {icon}",
-        "format-icons": {
-            "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-            "charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
-        }
-    },
-    "clock": {
-        "format": "{:%H}"
-    },
-    "clock#right": {
-        "format": "{:%M}"
-    },
-    "hyprland/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "active": "",
-            "default": ""
-        }
-    },
-    "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
-        "format-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "phone-muted": "",
-            "portable": "",
-            "car": "",
-            "default": ["", ""]
+        // top → bottom
+        "modules-left": [
+            "custom/launcher",
+            "ext/workspaces",
+            "clock",
+            "clock#date",
+            "custom/screenshot"
+        ],
+
+        // center of the bar: current workspace (+ "cava" once installed)
+        "modules-center": [
+            "custom/workspace"
+        ],
+
+        // bottom section
+        "modules-right": [
+            "tray",
+            "bluetooth",
+            "network",
+            "pulseaudio",
+            "cpu",
+            "memory",
+            "temperature",
+            "custom/power-profile",
+            "battery",
+            "custom/power"
+        ],
+
+        "custom/launcher": {
+            "format": "",
+            "tooltip": false,
+            "on-click": "rofi -show drun"
         },
-        "scroll-step": 1,
-        "on-click": "pavucontrol",
-        "ignored-sinks": ["Easy Effects Sink"]
+
+        "ext/workspaces": {
+            "format": "{name}",
+            "sort-by-id": true,
+            "ignore-hidden": false,
+            "on-click": "activate"
+        },
+
+        "custom/screenshot": {
+            "format": "",
+            "tooltip-format": "Left: region · Middle: active window · Right: full screen",
+            "on-click": "~/.config/hypr/scripts/screenshot.sh region",
+            "on-click-middle": "~/.config/hypr/scripts/screenshot.sh window",
+            "on-click-right": "~/.config/hypr/scripts/screenshot.sh full"
+        },
+
+        "custom/workspace": {
+            "exec": "~/.config/waybar/scripts/current-workspace.py",
+            "return-type": "json"
+        },
+
+        "clock": {
+            "format": "{:%H\n%M}",
+            "tooltip-format": "<tt>{calendar}</tt>",
+            "on-click": "~/.config/hypr/scripts/waybar-calendar.py --anchor top-right"
+        },
+
+        "clock#date": {
+            "format": "{:%a %d}",
+            "tooltip-format": "{:%B %Y}",
+            "on-click": "~/.config/hypr/scripts/waybar-calendar.py --anchor top-right"
+        },
+
+        "tray": {
+            "icon-size": 36,
+            "spacing": 6,
+            "show-passive-items": true
+        },
+
+        "bluetooth": {
+            "format": "{icon}",
+            "format-icons": {
+                "default": "󰂲",
+                "disabled": "󰂲",
+                "connected": "󰂯",
+                "pairing": "󰂯"
+            },
+            "tooltip-format": "{status}",
+            "on-click": "kitty -e bluetoothctl"
+        },
+
+        "network": {
+            "format-wifi": "󰤨",
+            "format-ethernet": "󰈀",
+            "format-disconnected": "󰤭",
+            "tooltip-format-wifi": "{essid} · {signalStrength}%",
+            "tooltip-format-ethernet": "{ifname}",
+            "tooltip-format-disconnected": "offline"
+        },
+
+        "pulseaudio": {
+            "format": "{icon}\n{volume}%",
+            "format-bluetooth": "󰂰\n{volume}%",
+            "format-muted": "󰝟",
+            "format-icons": {
+                "headphone": "",
+                "headset": "󰋎",
+                "default": ["", "", ""]
+            },
+            "scroll-step": 1,
+            "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "ignored-sinks": ["Easy Effects Sink"]
+        },
+
+        "cpu": {
+            "interval": 5,
+            "format": "󰻠\n{usage}%",
+            "tooltip": false
+        },
+
+        "memory": {
+            "interval": 10,
+            "format": "󰍛\n{percentage}%",
+            "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB"
+        },
+
+        "temperature": {
+            "critical-threshold": 80,
+            "format": "{icon}{temperatureC}°",
+            "format-icons": ["", "", ""],
+            "tooltip-format": "CPU {temperatureC}°C"
+        },
+
+        "custom/power-profile": {
+            "exec": "~/.config/waybar/scripts/power-profile.py",
+            "return-type": "json",
+            "tooltip": true,
+            "on-click": "~/.config/waybar/scripts/power-profile.py menu",
+            "on-click-right": "~/.config/waybar/scripts/power-profile.py cycle",
+            "on-scroll-up": "~/.config/waybar/scripts/power-profile.py cycle",
+            "on-scroll-down": "~/.config/waybar/scripts/power-profile.py cycle down"
+        },
+
+        "battery": {
+            "interval": 30,
+            "states": {
+                "warning": 30,
+                "critical": 15
+            },
+            "format": "{icon}\n{capacity}%",
+            "format-icons": {
+                "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+                "charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
+            }
+        },
+
+        "custom/power": {
+            "format": "",
+            "tooltip": false,
+            "on-click": "~/.config/hypr/scripts/power-menu.sh"
+        }
     },
-    "cava": {
-        "framerate": 30,
-        "autosens": 0.2,
-        "sensitivity": 1.02,
-        "bars": 14,
-        "lower_cutoff_freq": 50,
-        "higher_cutoff_freq": 10000,
-        "hide_on_silence": false,
-        "method": "pipewire",
-        "source": "auto",
-        "stereo": true,
-        "reverse": false,
-        "bar_delimiter": 0,
-        "monstercat": false,
-        "waves": false,
-        "noise_reduction": 0.55,
-        "input_delay": 2,
-        "format-icons": [" ", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-        "actions": {
-            "on-click-right": "mode"
+
+    // ── laptop (eDP-1): horizontal, top edge ──
+    {
+        "layer": "top",
+        "name": "waybar-laptop",
+        "output": "eDP-1",
+        "position": "top",
+        "height": 40,
+        "spacing": 8,
+        "margin-top": 8,
+        "margin-left": 8,
+        "margin-right": 8,
+
+        // left → right
+        "modules-left": [
+            "custom/launcher",
+            "ext/workspaces",
+            "custom/screenshot"
+        ],
+
+        // center of the bar: clock + date
+        "modules-center": [
+            "clock",
+            "clock#date"
+        ],
+
+        // right section
+        "modules-right": [
+            "tray",
+            "bluetooth",
+            "network",
+            "pulseaudio",
+            "cpu",
+            "memory",
+            "temperature",
+            "custom/power-profile",
+            "battery",
+            "custom/power"
+        ],
+
+        "custom/launcher": {
+            "format": "",
+            "tooltip": false,
+            "on-click": "rofi -show drun"
+        },
+
+        "ext/workspaces": {
+            "format": "{name}",
+            "sort-by-id": true,
+            "ignore-hidden": false,
+            "on-click": "activate"
+        },
+
+        "custom/screenshot": {
+            "format": "",
+            "tooltip-format": "Left: region · Middle: active window · Right: full screen",
+            "on-click": "~/.config/hypr/scripts/screenshot.sh region",
+            "on-click-middle": "~/.config/hypr/scripts/screenshot.sh window",
+            "on-click-right": "~/.config/hypr/scripts/screenshot.sh full"
+        },
+
+        "clock": {
+            "format": "{:%H:%M}",
+            "tooltip-format": "<tt>{calendar}</tt>",
+            "on-click": "~/.config/hypr/scripts/waybar-calendar.py --monitor eDP-1 --anchor top-center"
+        },
+
+        "clock#date": {
+            "format": "{:%a %d %b}",
+            "tooltip-format": "{:%B %Y}",
+            "on-click": "~/.config/hypr/scripts/waybar-calendar.py --monitor eDP-1 --anchor top-center"
+        },
+
+        "tray": {
+            "icon-size": 18,
+            "spacing": 6,
+            "show-passive-items": true
+        },
+
+        "bluetooth": {
+            "format": "{icon}",
+            "format-icons": {
+                "default": "󰂲",
+                "disabled": "󰂲",
+                "connected": "󰂯",
+                "pairing": "󰂯"
+            },
+            "tooltip-format": "{status}",
+            "on-click": "kitty -e bluetoothctl"
+        },
+
+        "network": {
+            "format-wifi": "󰤨",
+            "format-ethernet": "󰈀",
+            "format-disconnected": "󰤭",
+            "tooltip-format-wifi": "{essid} · {signalStrength}%",
+            "tooltip-format-ethernet": "{ifname}",
+            "tooltip-format-disconnected": "offline"
+        },
+
+        "pulseaudio": {
+            "format": "{icon} {volume}%",
+            "format-bluetooth": "󰂰 {volume}%",
+            "format-muted": "󰝟",
+            "format-icons": {
+                "headphone": "",
+                "headset": "󰋎",
+                "default": ["", "", ""]
+            },
+            "scroll-step": 1,
+            "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "ignored-sinks": ["Easy Effects Sink"]
+        },
+
+        "cpu": {
+            "interval": 5,
+            "format": "󰻠 {usage}%",
+            "tooltip": false
+        },
+
+        "memory": {
+            "interval": 10,
+            "format": "󰍛 {percentage}%",
+            "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB"
+        },
+
+        "temperature": {
+            "critical-threshold": 80,
+            "format": "{icon} {temperatureC}°",
+            "format-icons": ["", "", ""],
+            "tooltip-format": "CPU {temperatureC}°C"
+        },
+
+        "custom/power-profile": {
+            "exec": "~/.config/waybar/scripts/power-profile.py",
+            "return-type": "json",
+            "tooltip": true,
+            "on-click": "~/.config/waybar/scripts/power-profile.py menu",
+            "on-click-right": "~/.config/waybar/scripts/power-profile.py cycle",
+            "on-scroll-up": "~/.config/waybar/scripts/power-profile.py cycle",
+            "on-scroll-down": "~/.config/waybar/scripts/power-profile.py cycle down"
+        },
+
+        "battery": {
+            "interval": 30,
+            "states": {
+                "warning": 30,
+                "critical": 15
+            },
+            "format": "{icon} {capacity}%",
+            "format-icons": {
+                "default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+                "charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
+            }
+        },
+
+        "custom/power": {
+            "format": "",
+            "tooltip": false,
+            "on-click": "~/.config/hypr/scripts/power-menu.sh"
         }
     }
-}
-
+]

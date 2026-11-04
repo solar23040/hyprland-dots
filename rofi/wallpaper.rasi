@@ -1,0 +1,183 @@
+@import "colors/catppuccin.rasi"
+
+configuration {
+    modes: "dmenu";
+    show-icons: true;
+    case-sensitive: false;
+    cycle: true;
+    normalize-match: true;
+    matching: "normal";
+    tokenize: true;
+    click-to-exit: true;
+}
+
+* {
+    font: "JetBrainsMono Nerd Font 12";
+    foreground-dim: #6E6C7EFF;
+}
+
+window {
+    transparency: "real";
+    location: center;
+    anchor: center;
+    fullscreen: false;
+    width: 1000px;
+    border: 2px solid;
+    border-color: @selected;
+    border-radius: 18px;
+    background-color: @background;
+    cursor: "default";
+}
+
+mainbox {
+    enabled: true;
+    spacing: 14px;
+    margin: 0px;
+    padding: 20px;
+    border: 0px solid;
+    border-radius: 0px;
+    background-color: transparent;
+    children: [ "inputbar", "listview" ];
+}
+
+inputbar {
+    enabled: true;
+    spacing: 12px;
+    margin: 0px;
+    padding: 12px 16px;
+    border: 1px solid;
+    border-color: @selected;
+    border-radius: 12px;
+    background-color: @background-alt;
+    text-color: @foreground;
+    children: [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled: true;
+    background-color: inherit;
+    text-color: @selected;
+    font: "JetBrainsMono Nerd Font Bold 12";
+}
+
+entry {
+    enabled: true;
+    background-color: inherit;
+    text-color: inherit;
+    cursor: text;
+    placeholder: "Search wallpapers...";
+    placeholder-color: @foreground-dim;
+}
+
+listview {
+    enabled: true;
+    columns: 6;
+    lines: 3;
+    cycle: true;
+    dynamic: true;
+    scrollbar: true;
+    layout: vertical;
+    reverse: false;
+    fixed-height: false;
+    fixed-columns: true;
+    spacing: 10px;
+    margin: 0px;
+    padding: 4px;
+    border: 0px solid;
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+scrollbar {
+    width: 6px;
+    border: 0px;
+    handle-color: @selected;
+    handle-width: 6px;
+    padding: 0px;
+    border-radius: 3px;
+}
+
+element {
+    enabled: true;
+    spacing: 6px;
+    margin: 0px;
+    padding: 10px;
+    border: 1px solid;
+    border-color: transparent;
+    border-radius: 12px;
+    background-color: @background-alt;
+    text-color: @foreground;
+    cursor: pointer;
+    orientation: vertical;
+}
+
+element normal normal {
+    background-color: @background-alt;
+    text-color: @foreground;
+    border-color: transparent;
+}
+
+element normal urgent {
+    background-color: @urgent;
+    text-color: @background;
+    border-color: @urgent;
+}
+
+element normal active {
+    background-color: @active;
+    text-color: @background;
+    border-color: @active;
+}
+
+element selected normal {
+    background-color: @selected;
+    text-color: @background;
+    border-color: @selected;
+}
+
+element selected urgent {
+    background-color: @urgent;
+    text-color: @background;
+    border-color: @urgent;
+}
+
+element selected active {
+    background-color: @active;
+    text-color: @background;
+    border-color: @active;
+}
+
+element alternate normal {
+    background-color: @background-alt;
+    text-color: @foreground;
+    border-color: transparent;
+}
+
+element alternate urgent {
+    background-color: @urgent;
+    text-color: @background;
+    border-color: @urgent;
+}
+
+element alternate active {
+    background-color: @active;
+    text-color: @background;
+    border-color: @active;
+}
+
+element-icon {
+    background-color: transparent;
+    text-color: inherit;
+    size: 104px;
+    cursor: inherit;
+    border-radius: 8px;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    cursor: inherit;
+    vertical-align: 0.5;
+    horizontal-align: 0.5;
+    font: "JetBrainsMono Nerd Font 10";
+}

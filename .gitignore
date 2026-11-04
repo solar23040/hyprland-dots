@@ -1,0 +1,15 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Backups
+*.bak
+*.old
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
