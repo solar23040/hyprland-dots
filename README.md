@@ -27,11 +27,11 @@ A personal **Hyprland + Wayland** rice — clean, fast, and daily-driven. Lua-ba
 
 ## 📸 Screenshots
 
-> Add your screenshots here (`Pictures/` or a `screenshots/` folder).
+![Overview](screenshots/overview.png)
 
-| Desktop | Lock screen |
-|---|---|
-| _screenshot_ | _screenshot_ |
+![Overview 2](screenshots/overview2.png)
+
+![Rofi](screenshots/rofi.png)
 
 ## 📦 What's included
 
