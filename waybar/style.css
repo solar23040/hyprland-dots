@@ -33,6 +33,7 @@ window#waybar {
 #battery,
 #custom-screenshot,
 #custom-workspace,
+#custom-notifications,
 #custom-power-profile,
 #custom-power {
     transition: all 0.2s ease;
@@ -114,6 +115,19 @@ window#waybar {
 #custom-screenshot:hover {
     background: alpha(@surface0, 0.5);
     color: @teal;
+}
+
+/* ── notifications (unread badge) ── */
+#custom-notifications {
+    font-size: 14px;
+    color: @lavender;
+    padding: 5px 6px;
+    margin: 1px 0;
+    border-radius: 8px;
+}
+#custom-notifications:hover {
+    background: alpha(@surface0, 0.5);
+    color: @pink;
 }
 
 /* ── system modules (bottom section) ── */
@@ -261,6 +275,7 @@ window#waybar.waybar-4k {
 .waybar-4k #memory,
 .waybar-4k #temperature,
 .waybar-4k #custom-power-profile,
+.waybar-4k #custom-notifications,
 .waybar-4k #battery {
     font-size: 28px;
     padding: 10px 12px;
@@ -314,6 +329,7 @@ window#waybar.waybar-4k {
 .waybar-laptop #memory,
 .waybar-laptop #temperature,
 .waybar-laptop #custom-power-profile,
+.waybar-laptop #custom-notifications,
 .waybar-laptop #battery {
     padding: 0 8px;
     margin: 0;

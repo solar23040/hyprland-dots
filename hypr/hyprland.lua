@@ -52,6 +52,9 @@ local browser     = "brave-origin"
 
 -- See https://wiki.hypr.land/Configuring/Basics/Autostart/
 hl.on("hyprland.start", function()
+    -- Notification daemon first, so nothing is missed at login.
+    -- QT_QPA_PLATFORMTHEME gives Qt an icon theme for app icons.
+    hl.exec_cmd("env QT_QPA_PLATFORMTHEME=gtk3 qs -d -n -c notifications")
     hl.exec_cmd("waybar &")
     hl.exec_cmd("hyprpaper &")
     hl.exec_cmd("sleep 1 && waypaper --restore")
@@ -279,6 +282,7 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager .. " ~"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("pkill -x waybar; sleep 0.2; waybar &")) -- restart waybar
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc -c notifications call notifications toggle")) -- notification centre
 hl.bind("CTRL + EQUAL", hl.dsp.exec_cmd("/home/solar/.config/hypr/scripts/monitor-scale.sh up"), { repeating = true }) -- scale focused monitor up
 hl.bind("CTRL + MINUS", hl.dsp.exec_cmd("/home/solar/.config/hypr/scripts/monitor-scale.sh down"), { repeating = true }) -- scale focused monitor down
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(menu)) -- rofi app launcher
@@ -402,6 +406,15 @@ hl.window_rule({
 hl.layer_rule({
     name  = "waybar-blur",
     match = { namespace = "waybar.*" },
+    blur  = true,
+    ignore_alpha = 0.2,
+})
+
+-- Quickshell notification cards: blur what's behind the panels while
+-- the transparent parts of each surface stay transparent.
+hl.layer_rule({
+    name  = "qs-notif-blur",
+    match = { namespace = "qs-notif-.*" },
     blur  = true,
     ignore_alpha = 0.2,
 })

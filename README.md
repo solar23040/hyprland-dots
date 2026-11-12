@@ -17,10 +17,9 @@ A personal **Hyprland + Wayland** rice — clean, fast, and daily-driven. Lua-ba
 - **Alacritty** — blurred, translucent terminal
 - **Kitty** — alternate terminal
 - **Rofi** — app launcher, power menu, wallpaper picker, applets
-- **SwayNC** — notification center
+- **Quickshell** — notification daemon, toasts, history centre + brightness OSD
 - **Swaylock** — lock screen (swaylock-effects)
 - **Waypaper + hyprpaper** — wallpaper management & restore
-- **Quickshell** — brightness OSD
 - **Fastfetch** — system info
 - **Starship** — shell prompt
 - **Helper scripts** — screenshots, brightness, monitor scale, screen invert/rotation, wallpaper cycle, dropdown terminal, power menu, desktop clock, waybar calendar
@@ -43,10 +42,10 @@ hyprland-dots/
 ├── fastfetch/          # system info
 ├── hypr/               # Hyprland config + scripts + hyprlock
 ├── kitty/              # alternate terminal
-├── quickshell/         # brightness OSD
+├── quickshell/         # notification centre + brightness OSD
 ├── rofi/               # launcher, powermenu, applets, themes
 ├── swaylock/           # lock screen
-├── swaync/             # notifications
+├── swaync/             # legacy notification config (unused)
 ├── waybar/             # status bar + colors
 ├── waypaper/           # wallpaper manager
 ├── starship.toml       # shell prompt
@@ -89,7 +88,7 @@ The installer:
 
 ```bash
 sudo pacman -S hyprland waybar alacritty rofi swaylock fastfetch kitty \
-  swaync waypaper quickshell starship hyprpaper grim slurp wl-clipboard \
+  waypaper quickshell starship hyprpaper grim slurp wl-clipboard \
   playerctl brightnessctl ttf-jetbrains-mono-nerd bibata-cursor-theme
 ```
 
@@ -120,6 +119,7 @@ sudo dnf install hyprland waybar alacritty rofi swaylock fastfetch kitty
 | `Super + E` | File manager |
 | `Super + V` | Toggle float |
 | `Super + R` | Restart Waybar |
+| `Super + N` | Notification centre |
 | `Super + Space` | Rofi launcher |
 | `Super + W` | Cycle wallpaper |
 | `Super + Shift + W` | Wallpaper picker (rofi) |
@@ -135,6 +135,26 @@ sudo dnf install hyprland waybar alacritty rofi swaylock fastfetch kitty
 | `XF86MonBrightness*` | Brightness |
 
 Full list: `hypr/modules` → now inlined in `hypr/hyprland.lua`.
+
+## 🔔 Notifications
+
+Quickshell is the notification daemon here (it owns
+`org.freedesktop.Notifications`), so **don't run dunst, mako or swaync
+alongside it** — only one process can hold that bus name.
+
+- **Toasts** — top-right of the focused monitor, clear of the waybar.
+- **History** — `Super + N`; newest first, dismiss per row, `Clear` wipes
+  the list, the `DND` pill silences toasts but keeps recording.
+- **Inline reply** — chat apps that support the spec get a reply field.
+- **Waybar badge** — unread count, pushed via `RTMIN+8` instead of polling.
+
+```bash
+qs -c notifications                                    # foreground, shows QML errors
+qs ipc -c notifications call notifications toggle       # open / close
+qs ipc -c notifications call notifications dnd          # do not disturb
+qs ipc -c notifications call notifications clear        # clear history
+notify-send "Test" "Hello"                             # needs libnotify
+```
 
 ## 🔙 Restore backup
 

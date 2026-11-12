@@ -58,7 +58,7 @@ if [ ! -d "$REPO_DIR" ]; then
 fi
 
 # ---------- config dirs to install ----------
-CONFIG_DIRS=(alacritty fastfetch hypr kitty quickshell rofi swaylock swaync waybar waypaper)
+CONFIG_DIRS=(alacritty fastfetch hypr kitty quickshell rofi swaylock waybar waypaper)
 
 # ---------- backup ----------
 info "Backing up existing configs to $BACKUP_DIR"
@@ -114,8 +114,8 @@ echo "  3. Restart Waybar:  killall waybar; waybar &"
 echo ""
 echo "📦 Suggested dependencies (Arch):"
 echo "  sudo pacman -S hyprland waybar alacritty rofi swaylock fastfetch kitty \\"
-echo "    swaync waypaper quickshell starship ttf-jetbrains-mono-nerd bibata-cursor-theme \\"
-echo "    hyprpaper grim slurp wl-clipboard playerctl brightnessctl"
+echo "    waypaper quickshell starship ttf-jetbrains-mono-nerd bibata-cursor-theme \\"
+echo "    hyprpaper grim slurp wl-clipboard playerctl brightnessctl imagemagick chafa"
 echo ""
 echo "  Debian/Ubuntu: sudo apt install hyprland waybar alacritty rofi swaylock fastfetch kitty"
 echo "  Fedora:        sudo dnf install hyprland waybar alacritty rofi swaylock fastfetch kitty"

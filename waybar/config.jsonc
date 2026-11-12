@@ -36,6 +36,7 @@
 
         // bottom section
         "modules-right": [
+            "custom/notifications",
             "tray",
             "bluetooth",
             "network",
@@ -92,6 +93,20 @@
             "show-passive-items": true
         },
 
+        // Unread badge, driven by quickshell (qs -c notifications).
+        // The file only exists while there is something unread, and
+        // quickshell sends RTMIN+8 to refresh this module instantly.
+        "custom/notifications": {
+            "exec": "cat $XDG_RUNTIME_DIR/qs-notif-unread 2>/dev/null",
+            "exec-if": "test -s $XDG_RUNTIME_DIR/qs-notif-unread",
+            "signal": 8,
+            "format": "󰂚\n{}",
+            "tooltip": true,
+            "tooltip-format": "Notifications — click to open",
+            "on-click": "qs ipc -c notifications call notifications toggle",
+            "on-click-right": "qs ipc -c notifications call notifications clear"
+        },
+
         "bluetooth": {
             "format": "{icon}",
             "format-icons": {
@@ -108,9 +123,10 @@
             "format-wifi": "󰤨",
             "format-ethernet": "󰈀",
             "format-disconnected": "󰤭",
-            "tooltip-format-wifi": "{essid} · {signalStrength}%",
-            "tooltip-format-ethernet": "{ifname}",
-            "tooltip-format-disconnected": "offline"
+            "tooltip-format-wifi": "{essid}\n{ifname} · {signalStrength}% · {ipaddr}\nRight-click: switch Wi-Fi",
+            "tooltip-format-ethernet": "{ifname} · {ipaddr}\nRight-click: switch network",
+            "tooltip-format-disconnected": "Offline\nRight-click: choose a network",
+            "on-click-right": "~/.config/waybar/scripts/network-menu.py menu"
         },
 
         "pulseaudio": {
@@ -124,6 +140,9 @@
             },
             "scroll-step": 1,
             "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "on-click-right": "~/.config/waybar/scripts/audio-device.py menu sink",
+            "on-click-middle": "~/.config/waybar/scripts/audio-device.py menu source",
+            "tooltip-format": "{desc}\nVolume {volume}%\nRight-click: switch output · Middle: switch input",
             "ignored-sinks": ["Easy Effects Sink"]
         },
 
@@ -203,6 +222,7 @@
 
         // right section
         "modules-right": [
+            "custom/notifications",
             "tray",
             "bluetooth",
             "network",
@@ -254,6 +274,17 @@
             "show-passive-items": true
         },
 
+        "custom/notifications": {
+            "exec": "cat $XDG_RUNTIME_DIR/qs-notif-unread 2>/dev/null",
+            "exec-if": "test -s $XDG_RUNTIME_DIR/qs-notif-unread",
+            "signal": 8,
+            "format": "󰂚 {}",
+            "tooltip": true,
+            "tooltip-format": "Notifications — click to open",
+            "on-click": "qs ipc -c notifications call notifications toggle",
+            "on-click-right": "qs ipc -c notifications call notifications clear"
+        },
+
         "bluetooth": {
             "format": "{icon}",
             "format-icons": {
@@ -270,9 +301,10 @@
             "format-wifi": "󰤨",
             "format-ethernet": "󰈀",
             "format-disconnected": "󰤭",
-            "tooltip-format-wifi": "{essid} · {signalStrength}%",
-            "tooltip-format-ethernet": "{ifname}",
-            "tooltip-format-disconnected": "offline"
+            "tooltip-format-wifi": "{essid}\n{ifname} · {signalStrength}% · {ipaddr}\nRight-click: switch Wi-Fi",
+            "tooltip-format-ethernet": "{ifname} · {ipaddr}\nRight-click: switch network",
+            "tooltip-format-disconnected": "Offline\nRight-click: choose a network",
+            "on-click-right": "~/.config/waybar/scripts/network-menu.py menu"
         },
 
         "pulseaudio": {
@@ -286,6 +318,9 @@
             },
             "scroll-step": 1,
             "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "on-click-right": "~/.config/waybar/scripts/audio-device.py menu sink",
+            "on-click-middle": "~/.config/waybar/scripts/audio-device.py menu source",
+            "tooltip-format": "{desc}\nVolume {volume}%\nRight-click: switch output · Middle: switch input",
             "ignored-sinks": ["Easy Effects Sink"]
         },
 
